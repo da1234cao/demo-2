@@ -48,3 +48,11 @@ set_target_properties(qt_json_test PROPERTIES
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(qt_json_test)
 endif()
+
+
+# nlohmann_json
+include(FetchContent)
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
+FetchContent_MakeAvailable(json)
+add_executable(nlohmann_json_test nlohmann_json_test.cpp)
+target_link_libraries(nlohmann_json_test PRIVATE nlohmann_json::nlohmann_json)

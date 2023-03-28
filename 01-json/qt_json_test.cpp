@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QDebug>
 #include <iostream>
 
 QString create_json() {
