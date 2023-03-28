@@ -13,6 +13,9 @@ c++有很多json库：
 
 [Boost.JSON](https://www.boost.org/doc/libs/1_79_0/libs/json/doc/html/index.html)
 
+从上向下，从内向外。
+* 从上向下：遇到花括号，创建一个object。遇到中括号，创建一个array。
+* 从内向外：遇到嵌套结构，先构造里面内容，里面构造完后，赋值改外层。
 
 ### 
 
