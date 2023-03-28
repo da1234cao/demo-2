@@ -40,7 +40,7 @@ JSON对象是一个无序的“名称/值”集合。一个对象以左括号({)
 注：必须要理解上图含义，否则可能会理解不了下面编程的一般规律。
 
 c++有很多json库。除了上面官网罗列了的大量JSON库，这里也可以看到C++ json库之间的比较：[nativejson-benchmark](https://github.com/miloyip/nativejson-benchmark)
-
+    
 下面会尝试：Boost json、Qt json、nlohmann json，这三种json库。 
 
 ---
