@@ -44,7 +44,53 @@ void destroy_linked(node *head) {
     list_del(&elem->list);
     free(elem);
   }
-};
+}
+
+void multi_linked(node *linked_a, node *linked_b, node *linked_c) {
+  struct list_head *pos_a;
+  struct list_head *pos_b;
+  struct list_head *pos_c;
+
+  list_for_each(pos_a, &linked_a->list) {
+    node *entry_a = list_entry(pos_a, node, list);
+    int coeff_a = entry_a->coeff;
+    int expon_a = entry_a->expon;
+    list_for_each(pos_b, &linked_b->list) {
+      node *entry_b = list_entry(pos_b, node, list);
+      int coeff_b = entry_b->coeff;
+      int expon_b = entry_b->expon;
+
+      node *elem = (node *)malloc(sizeof(node));
+      elem->coeff = coeff_a * coeff_b;
+      elem->expon = expon_a + expon_b;
+      if (list_empty(&linked_c->list)) { // 存储结果的链表为空，直接插入
+        list_add_tail(&elem->list, &linked_c->list);
+      } else {
+        list_for_each(pos_c, &linked_c->list) {
+          node *entry_c = list_entry(pos_c, node, list);
+          int coeff_c = entry_c->coeff;
+          int expon_c = entry_c->expon;
+          if (elem->expon < expon_c) {
+            // 指数非降序，遇到第一个大于elem的指数，插入它之前
+            list_add(&elem->list, pos_c->prev);
+            break;
+          } else if (elem->expon == expon_c) {
+            // 指数非降序，遇到等于elem的指数，合并
+            entry_c->coeff += coeff_c;
+            break;
+          } else {
+            // 指数非降序，遇到小于elem的指数，通常是继续向后找
+            // 如果此时是查找的最后一个元素--即,elem的指数最大，直接插入到最后
+            if (pos_c->next == &linked_c->list) {
+              list_add(&elem->list, pos_c);
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 int main(int argc, char *argv[]) {
   node linked_a;
@@ -59,10 +105,18 @@ int main(int argc, char *argv[]) {
   int b_info[] = {2, 0, -2, 1, 5, 4};
 
   create_linked(&linked_a, a_info, sizeof(a_info) / sizeof(a_info[0]));
-  // print_linked(&linked_a);
+  print_linked(&linked_a);
+  printf("----------------------\n");
   create_linked(&linked_b, b_info, sizeof(b_info) / sizeof(b_info[0]));
-  // print_linked(&linked_b);
+  print_linked(&linked_b);
+  printf("----------------------\n");
 
+  multi_linked(&linked_a, &linked_b, &linked_c);
+  print_linked(&linked_c);
 
   destroy_linked(&linked_a);
+  destroy_linked(&linked_b);
+  destroy_linked(&linked_c);
+
+  return 0;
 }
