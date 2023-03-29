@@ -76,7 +76,7 @@ void multi_linked(node *linked_a, node *linked_b, node *linked_c) {
             break;
           } else if (elem->expon == expon_c) {
             // 指数非降序，遇到等于elem的指数，合并
-            entry_c->coeff += coeff_c;
+            entry_c->coeff += elem->coeff;
             break;
           } else {
             // 指数非降序，遇到小于elem的指数，通常是继续向后找
