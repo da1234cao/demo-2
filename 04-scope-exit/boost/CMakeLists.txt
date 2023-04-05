@@ -21,3 +21,6 @@ target_link_libraries(lambda-scope-exit PRIVATE ${Boost_LIBRARIES})
 
 add_executable(boost-scope-exit-deep boost-scope-exit-deep.cpp)
 target_link_libraries(boost-scope-exit-deep PRIVATE ${Boost_LIBRARIES})
+
+add_executable(std-experimental-scope-exit std-experimental-scope-exit.cpp)
+target_link_libraries(std-experimental-scope-exit PRIVATE ${Boost_LIBRARIES})
