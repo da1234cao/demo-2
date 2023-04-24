@@ -1,16 +1,17 @@
 #include <QApplication>
 #include <QDebug>
 #include <QEventLoop>
+#include <QLoggingCategory>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QScopeGuard>
 #include <QUrl>
-#include <QLoggingCategory>
 
-bool request(QString url_str, QString &err_msg, int timeout = 1000) {
+void http_get(QString url_str) {
   QUrl url(url_str);
   QNetworkRequest request;
-  QNetworkAccessManager net_man;
+  QNetworkAccessManager manager;
 
   if (url.scheme() == "https") {
     QSslConfiguration sslConfiguration = request.sslConfiguration();
@@ -21,34 +22,23 @@ bool request(QString url_str, QString &err_msg, int timeout = 1000) {
   }
   request.setUrl(url);
 
-  bool result = false;
-  QNetworkReply *reply = net_man.get(request);
+  QNetworkReply *reply = manager.get(request);
+  auto guard = qScopeGuard([&reply] { reply->deleteLater(); });
   QEventLoop loop;
   QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
   loop.exec();
 
-  if (reply->error() == QNetworkReply::NoError) {
-    result = true;
+  if (reply->error() != QNetworkReply::NoError) {
+    qDebug() << reply->errorString();
   } else {
-    err_msg = reply->errorString();
+    qDebug() << reply->readAll();
   }
-
-  reply->deleteLater();
-
-  return result;
 }
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
-  QString err_msg;
-  bool ret = request("https://www.baidu.com", err_msg);
-  if (ret == true) {
-    qDebug() << "url is valid";
-  } else {
-    qDebug() << "url is not valid: " << err_msg;
-  }
-
+  http_get("https://www.example.com/");
   // app.exec();
   return 0;
 }
