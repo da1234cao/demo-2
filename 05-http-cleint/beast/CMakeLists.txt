@@ -12,5 +12,11 @@ if(NOT Boost_FOUND)
 endif()
 include_directories((${Boost_INCLUDE_DIRS}))
 
+# openssl
+set(OPENSSL_USE_STATIC_LIBS true)
+find_package(OpenSSL REQUIRED)
+include_directories(${OPENSSL_INCLUDE_DIR})
+link_directories(${OPENSSL_LIBRARIES})
+
 add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries(${PROJECT_NAME}  PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}  PRIVATE ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES})
