@@ -19,4 +19,7 @@ include_directories(${OPENSSL_INCLUDE_DIR})
 link_directories(${OPENSSL_LIBRARIES})
 
 add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries(${PROJECT_NAME}  PRIVATE ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES})
+if(WIN32)
+target_link_libraries(${PROJECT_NAME}  PRIVATE CRYPT32.LIB)
+endif()
+target_link_libraries(${PROJECT_NAME}  PRIVATE ${Boost_LIBRARIES}  ${OPENSSL_LIBRARIES})
