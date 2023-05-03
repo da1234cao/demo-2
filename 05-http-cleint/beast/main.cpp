@@ -2,13 +2,14 @@
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
+#include <boost/beast/version.hpp>
 #include <iostream>
 #include <string>
 
 class req_info {
 public:
   std::string host;
-  std::string port;
+  std::string service;
   std::string target;
   boost::beast::http::verb method;
 };
@@ -20,13 +21,13 @@ public:
 
   void get_response() {
     try {
-      req.set(boost::beast::http::field::host, info.host);
-      req.target(info.target);
       req.method(info.method);
-
+      req.target(info.target);
+      req.set(boost::beast::http::field::host, info.host);
+      req.set(boost::beast::http::field::user_agent, "boost beast test");
       boost::asio::io_context ioc;
       boost::asio::ip::tcp::resolver resolver(ioc);
-      auto results = resolver.resolve(info.host, info.port);
+      auto results = resolver.resolve(info.host, info.service);
 
       boost::beast::tcp_stream stream(ioc);
       stream.connect(results);
@@ -57,7 +58,7 @@ private:
 int main(int argc, char *argv[]) {
   req_info info;
   info.host = "www.baidu.com";
-  info.port = "http";
+  info.service = "http";
   info.target = "/";
   info.method = boost::beast::http::verb::get;
 
