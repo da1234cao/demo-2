@@ -1,22 +1,7 @@
-#include "3rd/http_parser.h"
+#pragma once
 #include "main.h"
-#include <stdlib.h>
-#include <string.h>
 
-inline char *copy_url_part(const char *url, const struct http_parser_url *parts, enum http_parser_url_fields field) {
-    char *part = NULL;
+char *copy_url_part(const char *url, const struct http_parser_url *parts,
+                    enum http_parser_url_fields field);
 
-    if (parts->field_set & (1 << field)) {
-        uint16_t off = parts->field_data[field].off;
-        uint16_t len = parts->field_data[field].len;
-        part = (char*)calloc(1, len + 1 * sizeof(char));
-        memcpy(part, &url[off], len);
-    }
-
-    return part;
-}
-
-inline void print_connection(const connection *con) {
-    printf("url: %s\n", con->url);
-    printf("UF_SCHEMA: %s\n", copy_url_part(con->url, &con->url_parts, UF_SCHEMA));
-}
+void print_connection(const connection *con);

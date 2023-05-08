@@ -1,3 +1,4 @@
+#pragma once
 #include "3rd/http_parser.h"
 #include <openssl/ssl.h>
 

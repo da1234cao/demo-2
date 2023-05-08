@@ -29,7 +29,12 @@ find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 link_directories(${OPENSSL_LIBRARIES})
 
-add_executable(${PROJECT_NAME} main.c 3rd/http_parser.c net.c)
+include_directories(${CMAKE_SOURCE_DIR})
+set(SRC ${CMAKE_SOURCE_DIR}/main.c 
+        ${CMAKE_SOURCE_DIR}/3rd/http_parser.c 
+        ${CMAKE_SOURCE_DIR}/utils.c)
+
+add_executable(${PROJECT_NAME} ${SRC})
 if(WIN32)
 target_link_libraries(${PROJECT_NAME}  PRIVATE CRYPT32.LIB)
 endif()

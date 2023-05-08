@@ -7,6 +7,7 @@ int main(int argc, char *argv[]) {
   connection con = {};
   strncpy(con.url, "https://www.baidu.com", sizeof(con.url));
   http_parser_parse_url(con.url, strlen(con.url), 0, &con.url_parts);
+
   print_connection(&con);
   return 0;
 }
