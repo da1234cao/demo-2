@@ -32,7 +32,8 @@ link_directories(${OPENSSL_LIBRARIES})
 include_directories(${CMAKE_SOURCE_DIR})
 set(SRC ${CMAKE_SOURCE_DIR}/main.c 
         ${CMAKE_SOURCE_DIR}/3rd/http_parser.c 
-        ${CMAKE_SOURCE_DIR}/utils.c)
+        ${CMAKE_SOURCE_DIR}/utils.c
+        ${CMAKE_SOURCE_DIR}/net.c)
 
 add_executable(${PROJECT_NAME} ${SRC})
 if(WIN32)
