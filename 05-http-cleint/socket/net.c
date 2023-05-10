@@ -1,5 +1,6 @@
 #include "net.h"
 #include "utils.h"
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
 
@@ -8,12 +9,14 @@ int socket_connect(connection *con) {
   struct addrinfo hints;
   struct addrinfo *res;
   memset(&hints, 0, sizeof(hints));
+  hints.ai_flags = 0;
   hints.ai_family = AF_INET; // AF_UNSPEC为 AF_INET or AF_INET6
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_protocol = IPPROTO_TCP; // 指定协议为TCP
 
-  if ((status = getaddrinfo(copy_url_part(con->url, &con->url_parts, UF_HOST),
-                            NULL, &hints, &res)) != 0) {
+  char *host = copy_url_part(con->url, &con->url_parts, UF_HOST);
+  char *schema = copy_url_part(con->url, &con->url_parts, UF_HOST);
+  if ((status = getaddrinfo(host, schema, &hints, &res)) != 0) {
     fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
     return -1;
   }
@@ -28,4 +31,7 @@ int socket_connect(connection *con) {
       break;
     }
   }
+
+  free(host);
+  free(schema);
 }
