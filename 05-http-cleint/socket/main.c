@@ -10,6 +10,7 @@ int main(int argc, char *argv[]) {
   http_parser_parse_url(con.url, strlen(con.url), 0, &con.url_parts);
 
   socket_connect(&con);
+  construct_request(&con);
 
   print_connection(&con);
   return 0;

@@ -15,7 +15,9 @@ typedef struct connection {
   char url[URL_MAX_LENGTH];
   struct http_parser_url url_parts;
   char send_uf[SENDBUF];
-  char rec_buf[RECVBUF];
+  int recv_n;
+  char recv_buf[RECVBUF];
+  int is_recv_all;
 } connection;
 
 struct sock {

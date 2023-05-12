@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+void init_connection(connection *con){
+  memset(con, 0, siezof(*con));
+  http_parser_init(&con->parser, HTTP_RESPONSE);
+}
+
 char *copy_url_part(const char *url, const struct http_parser_url *parts,
                     enum http_parser_url_fields field) {
   char *part = NULL;

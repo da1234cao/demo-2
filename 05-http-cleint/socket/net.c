@@ -35,3 +35,24 @@ int socket_connect(connection *con) {
   free(host);
   free(schema);
 }
+
+status socket_write(connection *con) {
+  int n = 0;
+  while(n < strlen(con->send_uf)) {
+    int send_n = write(con->fd, con->send_uf + n, strlen(con->send_uf) - n);
+    if(send_n == -1) {
+      return ERROR;
+    }
+    n += send_n;
+  }
+  return OK;
+}
+
+status socket_read(connection *con) {
+}
+
+void construct_request(connection *con) {
+  char *host = copy_url_part(con->url, &con->url_parts, UF_HOST);
+  char *message_fmt = "GET / HTTP/1.0\r\n\r\n";
+  snprintf(con->send_uf, SENDBUF - 1, message_fmt);
+}
