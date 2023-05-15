@@ -1,11 +1,18 @@
-#include "utils.h"
-#include "3rd/http_parser.h"
+#include "connection.h"
 #include <stdlib.h>
 #include <string.h>
 
+int on_message_complete_cb(http_parser *parser) {
+  connection *con = (connection*)(parser->data);
+  con->is_recv_all = 1;
+  return 0;
+}
+
 void init_connection(connection *con){
-  memset(con, 0, siezof(*con));
+  memset(con, 0, sizeof(*con));
   http_parser_init(&con->parser, HTTP_RESPONSE);
+  con->settings.on_message_complete = on_message_complete_cb;
+  con->parser.data = con;
 }
 
 char *copy_url_part(const char *url, const struct http_parser_url *parts,
@@ -27,4 +34,6 @@ void print_connection(const connection *con) {
   printf("UF_SCHEMA: %s\n",
          copy_url_part(con->url, &con->url_parts, UF_SCHEMA));
   printf("UF_HOST: %s\n", copy_url_part(con->url, &con->url_parts, UF_HOST));
+  printf("request: %s\n", con->send_uf);
+  printf("response: %s\n", con->recv_buf);
 }

@@ -1,5 +1,4 @@
 #include "net.h"
-#include "utils.h"
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
@@ -38,9 +37,9 @@ int socket_connect(connection *con) {
 
 status socket_write(connection *con) {
   int n = 0;
-  while(n < strlen(con->send_uf)) {
+  while (n < strlen(con->send_uf)) {
     int send_n = write(con->fd, con->send_uf + n, strlen(con->send_uf) - n);
-    if(send_n == -1) {
+    if (send_n == -1) {
       return ERROR;
     }
     n += send_n;
@@ -49,6 +48,14 @@ status socket_write(connection *con) {
 }
 
 status socket_read(connection *con) {
+  while (con->is_recv_all == 0 && (sizeof(con->recv_buf) - con->recv_n > 0)) {
+    // 同步方式，当读取到一个完整的response的时候，停止
+    int n = read(con->fd, con->recv_buf + con->recv_n,
+                 sizeof(con->recv_buf) - con->recv_n);
+    con->recv_n += n;
+    http_parser_execute(&con->parser, &con->settings, con->recv_buf,
+                        con->recv_n);
+  }
 }
 
 void construct_request(connection *con) {
