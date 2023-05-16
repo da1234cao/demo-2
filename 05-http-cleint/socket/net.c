@@ -2,6 +2,9 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 int socket_connect(connection *con) {
   int status;
@@ -14,7 +17,7 @@ int socket_connect(connection *con) {
   hints.ai_protocol = IPPROTO_TCP; // 指定协议为TCP
 
   char *host = copy_url_part(con->url, &con->url_parts, UF_HOST);
-  char *schema = copy_url_part(con->url, &con->url_parts, UF_HOST);
+  char *schema = copy_url_part(con->url, &con->url_parts, UF_SCHEMA);
   if ((status = getaddrinfo(host, schema, &hints, &res)) != 0) {
     fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
     return -1;
