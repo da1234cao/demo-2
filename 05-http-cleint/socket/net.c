@@ -6,7 +6,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-int socket_connect(connection *con) {
+status socket_init(connection *con) {
+  // do nothing
+  return OK;
+}
+
+status socket_connect(connection *con) {
   int status;
   struct addrinfo hints;
   struct addrinfo *res;
@@ -20,7 +25,7 @@ int socket_connect(connection *con) {
   char *schema = copy_url_part(con->url, &con->url_parts, UF_SCHEMA);
   if ((status = getaddrinfo(host, schema, &hints, &res)) != 0) {
     fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
-    return -1;
+    return ERROR;
   }
 
   for (struct addrinfo *p = res; p != NULL; p = p->ai_next) {
@@ -36,6 +41,7 @@ int socket_connect(connection *con) {
 
   free(host);
   free(schema);
+  return OK;
 }
 
 status socket_write(connection *con) {
@@ -59,10 +65,5 @@ status socket_read(connection *con) {
     http_parser_execute(&con->parser, &con->settings, con->recv_buf,
                         con->recv_n);
   }
-}
-
-void construct_request(connection *con) {
-  char *host = copy_url_part(con->url, &con->url_parts, UF_HOST);
-  char *message_fmt = "GET / HTTP/1.0\r\n\r\n";
-  snprintf(con->send_uf, SENDBUF - 1, message_fmt);
+  return OK;
 }

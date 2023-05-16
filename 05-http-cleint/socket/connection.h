@@ -12,6 +12,7 @@ typedef struct connection {
   http_parser parser;
   http_parser_settings settings;
   int fd;
+  SSL_CTX *ctx;
   SSL *ssl;
   char url[URL_MAX_LENGTH];
   struct http_parser_url url_parts;
@@ -29,3 +30,5 @@ char *copy_url_part(const char *url, const struct http_parser_url *parts,
                     enum http_parser_url_fields field);
 
 void print_connection(const connection *con);
+
+void construct_request(connection *con);
