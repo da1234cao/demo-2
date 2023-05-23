@@ -40,6 +40,11 @@ void print_connection(const connection *con) {
 
 void construct_request(connection *con) {
   char *host = copy_url_part(con->url, &con->url_parts, UF_HOST);
-  char *message_fmt = "GET / HTTP/1.0\r\n\r\n";
-  snprintf(con->send_uf, SENDBUF - 1, message_fmt);
+  char *message_fmt = "GET / HTTP/1.0\r\nHost: %s\r\n\r\n";
+  snprintf(con->send_uf, SENDBUF - 1, message_fmt, host);
+}
+
+int is_https(connection *con) {
+  char *schema = copy_url_part(con->url, &con->url_parts, UF_SCHEMA);
+  strcasecmp(schema, "https") == 0 ? 1 : -1;
 }

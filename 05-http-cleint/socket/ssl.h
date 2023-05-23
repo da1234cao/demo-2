@@ -1,7 +1,7 @@
 #pragma once
 #include "connection.h"
 
-status ssl_init(connection *c);
+status ssl_init(connection *con);
 status ssl_connect(connection *con);
 status ssl_close(connection *con);
 status ssl_read(connection *con);

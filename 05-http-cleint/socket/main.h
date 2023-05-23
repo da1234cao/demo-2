@@ -8,5 +8,5 @@ struct sock {
   status (*read)(connection *c);
   status (*write)(connection *c);
   status (*close)(connection *c);
-  status (*readable)(connection *c);
+  size_t (*readable)(connection *c);
 };

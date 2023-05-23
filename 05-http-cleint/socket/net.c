@@ -2,6 +2,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -66,4 +67,16 @@ status socket_read(connection *con) {
                         con->recv_n);
   }
   return OK;
+}
+
+status socket_close(connection *con) {
+  if (con->fd > 0) {
+    close(con->fd);
+  }
+}
+
+size_t sock_readable(connection *c) {
+  int n, rc;
+  rc = ioctl(c->fd, FIONREAD, &n);
+  return rc == -1 ? 0 : n;
 }

@@ -32,3 +32,5 @@ char *copy_url_part(const char *url, const struct http_parser_url *parts,
 void print_connection(const connection *con);
 
 void construct_request(connection *con);
+
+int is_https(connection *con);

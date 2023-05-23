@@ -21,19 +21,20 @@ find_package(Boost REQUIRED
 if(NOT Boost_FOUND)
   message(FATAL_ERROR "Boost not found")
 endif()
-include_directories((${Boost_INCLUDE_DIRS}))
+include_directories(${Boost_INCLUDE_DIRS})
 
 # openssl
 set(OPENSSL_USE_STATIC_LIBS true)
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
-link_directories(${OPENSSL_LIBRARIES})
+message(STATUS "OPENSSL_LIBRARIES: ${OPENSSL_LIBRARIES}")
 
 include_directories(${CMAKE_SOURCE_DIR})
 set(SRC ${CMAKE_SOURCE_DIR}/main.c 
         ${CMAKE_SOURCE_DIR}/3rd/http_parser.c 
         ${CMAKE_SOURCE_DIR}/connection.c
-        ${CMAKE_SOURCE_DIR}/net.c)
+        ${CMAKE_SOURCE_DIR}/net.c
+        ${CMAKE_SOURCE_DIR}/ssl.c)
 
 add_executable(${PROJECT_NAME} ${SRC})
 if(WIN32)
