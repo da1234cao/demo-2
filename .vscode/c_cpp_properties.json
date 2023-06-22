@@ -1,0 +1,34 @@
+{
+    "configurations": [
+        {
+            "name": "Linux Config",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__linux__",
+                "__x86_64__",
+                "_GNU_SOURCE"
+            ],
+            "compilerPath": "/usr/bin/clang-14",
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64"
+        },
+        {
+            "name": "Windows Config",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Qt/6.4.2/msvc2019_64/include",
+                "C:/Boost/include"
+            ],
+            "defines": [
+                "WINDOWS"
+            ],
+            "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64/cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}

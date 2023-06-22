@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "net.h": "c",
+        "netdb.h": "c",
+        "*.ipp": "c",
+        "internet": "c",
+        "stdio.h": "c"
+    }
+}
