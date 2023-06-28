@@ -29,7 +29,7 @@ private:
 };
 
 int main(int argc, char **argv) {
-  std::string server_address("0.0.0.0:5000");
+  std::string server_address("127.0.0.1:5000");
   calcuClient calcu(
       grpc::CreateChannel(server_address, grpc::InsecureChannelCredentials()));
   int result = calcu.sum(1, 2);

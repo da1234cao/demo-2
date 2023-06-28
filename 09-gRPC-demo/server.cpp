@@ -11,7 +11,9 @@ class CalcuServiceImpl final : public math::calculator::Service {
 };
 
 void RunServer() {
-  std::string server_address("0.0.0.0:5000");
+  // 在windows会报错,不知道是不是防火墙的原因,没去细察
+  // std::string server_address("0.0.0.0:5000");
+  std::string server_address("127.0.0.1:5000");
   CalcuServiceImpl service;
 
   grpc::ServerBuilder builder;
