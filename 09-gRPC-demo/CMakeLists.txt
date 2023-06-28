@@ -47,10 +47,6 @@ add_library(calcu_grpc_proto ${calcu_proto_srcs} ${calcu_proto_hdrs}
 
 target_link_libraries(calcu_grpc_proto ${GRPC_LIBRARIES} ${Protobuf_LIBRARIES})
 
-add_executable(${PROJECT_NAME} main.cpp)
-
-target_link_libraries(${PROJECT_NAME} ${calcu_grpc_proto} ${Protobuf_LIBRARIES})
-
 foreach(_target main client server)
   add_executable(${_target} "${CMAKE_SOURCE_DIR}/${_target}.cpp")
   target_link_libraries(${_target} calcu_grpc_proto ${GRPC_LIBRARIES}
