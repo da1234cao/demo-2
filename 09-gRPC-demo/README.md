@@ -1,4 +1,4 @@
-[toc]
+[TOC]
 
 ## 前言
 
@@ -167,7 +167,7 @@ class CalcuServiceImpl final : public math::calculator::Service {
 };
 ```
 
-这个方法，需要被传入一个`context`，它被gRPC使用。比如，客户端在里面传入了超时时间。`request`和`reply`是protocol buffer。`request`是客户端传递过来的参数，`reply`是服务端回复给客户端的内容。
+这个方法，需要被传入一个`context`，它被gRPC使用。比如，客户端在里面传入了截止日期。`request`和`reply`是protocol buffer。`request`是客户端传递过来的参数，`reply`是服务端回复给客户端的内容。
 
 接下来，需要启动gRPC的服务，一遍客户端可以使用上面定义的服务。
 
@@ -201,3 +201,59 @@ void RunServer() {
 3. 指定要用于使用生成器的 `AddListeningPort()` 方法侦听客户端请求的地址和端口。`InsecureServerCredentials`是指不安全的方式。其他参数,自行参考官方文档。
 4. 在构建器上调用 `BuildAndStart()` ，为我们的服务创建并启动RPC服务器。
 5. 在服务器上调用 `Wait()` 进行阻塞等待，直到进程被终止或调用 `Shutdown()` 。
+
+---
+
+### 创建客户端
+
+首先我们需要为stub创建一个channel,指定我们想要连接的服务器地址和端口。然后使用从`.proto`生成的 `calculator` 类中提供的 `NewStub` 方法，创建一个stub(里面有我们可以调用的接口, channel提供了服务端的地址和端口)。
+
+接着，我们创建并填充了一个protocol buffer的请求对象，创建了一个响应的protocol buffer对象。我们的还创建了 `ClientContext` 对象-你可以选择在此对象上设置RPC配置值，例如截止日期，但目前我们将使用默认设置。请注意，不能在调用之间重用此对象。最后，我们调用存根上的方法，将上下文、请求和响应传递给它。如果方法返回 `OK` ，那么我们可以从响应对象中读取服务器的响应信息。
+
+```cpp
+class calcuClient {
+public:
+  calcuClient(std::shared_ptr<grpc::Channel> channel)
+      : stub_(math::calculator::NewStub(channel)) {}
+  int sum(const int a, const int b) {
+    math::request req;
+    req.set_addend(a);
+    req.set_additive_term(b);
+    math::reply reply;
+    grpc::ClientContext context;
+
+    grpc::Status status = stub_->sum(&context, req, &reply);
+
+    if (status.ok()) {
+      return reply.result();
+    } else {
+      std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+      return -1;
+    }
+  }
+
+private:
+  std::unique_ptr<math::calculator::Stub> stub_;
+};
+
+int main(int argc, char **argv) {
+  std::string server_address("127.0.0.1:5000");
+  calcuClient calcu(
+      grpc::CreateChannel(server_address, grpc::InsecureChannelCredentials()));
+  int result = calcu.sum(1, 2);
+  std::cout << "calcu received: " << result << std::endl;
+
+  return 0;
+}
+```
+
+---
+
+### 最后
+
+本文没有提到，流式RPC，异步API，安全传输等，详细见官方文档。
+
+本文在提到API的时候，并没有给出API的链接，详细见官方文档。
+
+本文的cmake构建方式，在win11和wsl2-ubuntu22上测试过，更多系统没有测试。
