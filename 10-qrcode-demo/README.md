@@ -157,7 +157,7 @@ void MainWindow::onButtonClicked() {
 
 结果如下。
 
-![68c512fe-1a31-48e3-b5aa-80a62acf46bf](./images/68c512fe-1a31-48e3-b5aa-80a62acf46bf.png)
+![hello_world_2](./images/hello_world_2.png)
 
 ---
 
