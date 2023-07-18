@@ -19,6 +19,10 @@ go version go1.20.6 windows/amd64
 
 # 系统的环境变量中也多了一条
 C:\Program Files\Go\bin
+
+# Golang设置网络代理
+# ref:https://zhuanlan.zhihu.com/p/572151744
+go env -w GOPROXY=https://goproxy.cn,direct
 ```
 
 ## hello world
