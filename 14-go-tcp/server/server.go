@@ -18,11 +18,11 @@ type TcpServer struct {
 	Port int
 }
 
-func (server *TcpServer) start() {
+func (server *TcpServer) Start() {
 	fmt.Println("tcp server start...")
 
 	// 创建 listener
-	listener, err := net.Listen("tpc", server.Ip+":"+strconv.Itoa(server.Port))
+	listener, err := net.Listen("tcp", server.Ip+":"+strconv.Itoa(server.Port))
 	if err != nil {
 		fmt.Println("Error listening:", err.Error())
 		return
@@ -40,7 +40,18 @@ func (server *TcpServer) start() {
 }
 
 func tcpConnProcess(conn net.Conn) {
+	defer conn.Close()
+	// reader := bufio.NewReader(conn)
 	for {
-		reader := bufio.NewReader(conn)
+		reader := bufio.NewReader(conn) // 错误-应该写在外层
+		var buf [128]byte
+		n, err := reader.Read(buf[:])
+		if err != nil {
+			fmt.Println("Error read", err)
+			break
+		}
+		recvStr := string(buf[:n])
+		fmt.Println("receive:", recvStr)
+		conn.Write([]byte(recvStr))
 	}
 }
