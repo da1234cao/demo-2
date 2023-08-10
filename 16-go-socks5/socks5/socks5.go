@@ -133,11 +133,6 @@ func auth(proxy *Proxy) error {
 	buf := utils.SPool.Get().([]byte)
 	defer utils.SPool.Put(buf)
 
-	b := make([]byte, 128)
-	b = append(b, 'a', 'b')
-	c := &b
-	c[:2]
-
 	n, err := io.ReadFull(proxy.Inbound.reader, buf[:2])
 	if n != 2 {
 		return errors.New("fail to read socks5 request:" + err.Error())
