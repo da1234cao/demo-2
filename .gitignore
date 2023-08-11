@@ -4,6 +4,10 @@
 # vscode配置
 **/.vscode
 
+# 证书和私钥
+**/*.cer
+**/*.key
+
 # Prerequisites
 *.d
 
