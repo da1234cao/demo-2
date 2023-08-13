@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"go-socks5-demo/config"
+	"go-socks5-demo/utils"
 	"io"
 	"net"
 	"strconv"
@@ -129,7 +130,8 @@ func auth(proxy *Proxy) error {
 		   | 1  |    1     | 1 to 255 |
 		   +----+----------+----------+
 	*/
-	buf := make([]byte, 128)
+	buf := utils.SPool.Get().([]byte)
+	defer utils.SPool.Put(buf)
 
 	n, err := io.ReadFull(proxy.Inbound.reader, buf[:2])
 	if n != 2 {
@@ -180,7 +182,8 @@ func readRequest(proxy *Proxy) error {
 		   | 1  |  1  | X'00' |  1   | Variable |    2     |
 		   +----+-----+-------+------+----------+----------+
 	*/
-	buf := make([]byte, 128)
+	buf := utils.SPool.Get().([]byte)
+	defer utils.SPool.Put(buf)
 	n, err := io.ReadFull(proxy.Inbound.reader, buf[:4])
 	if n != 4 {
 		return errors.New("fail to read request " + err.Error())
