@@ -1,0 +1,11 @@
+{
+    "listenIp": "0.0.0.0",
+    "listenPort": 10000,
+    "protocol": {
+        "https": {
+            "notUsed": false,
+            "key": "./key.pem",
+            "certificate": "./cert.pem"
+        }
+    }
+}
