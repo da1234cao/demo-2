@@ -4,6 +4,7 @@
         "netdb.h": "c",
         "*.ipp": "c",
         "internet": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "chrono": "cpp"
     }
 }
