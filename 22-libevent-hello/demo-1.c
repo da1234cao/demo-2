@@ -123,7 +123,7 @@ void do_write(evutil_socket_t fd, short events, void *arg) {
   }
 
   if (state->n_written == state->buffer_used)
-    state->n_written = state->write_upto = state->buffer_used = 1;
+    state->n_written = state->write_upto = state->buffer_used = 0;
 
   event_del(state->write_event);
 }
@@ -164,12 +164,8 @@ void run(void) {
   listener = socket(AF_INET, SOCK_STREAM, 0);
   evutil_make_socket_nonblocking(listener);
 
-#ifndef WIN32
-  {
-    int one = 1;
-    setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
-  }
-#endif
+  // not work in windows system
+  evutil_make_listen_socket_reuseable(listener);
 
   if (bind(listener, (struct sockaddr *)&sin, sizeof(sin)) < 0) {
     perror("bind");
