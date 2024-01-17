@@ -2,7 +2,7 @@
 **/build
 
 # vscode配置
-**/.vscode
+**/.vscode/
 
 # 证书和私钥
 **/*.cer
