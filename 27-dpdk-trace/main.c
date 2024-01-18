@@ -1,9 +1,8 @@
 #include "trace_point.h"
 #include <rte_eal.h>
+#include <rte_trace.h>
 
 int global_count = 0;
-
-RTE_TRACE_POINT_REGISTER(app_trace_string, app.trace.string)
 
 int main(int argc, char *argv[]) {
 
