@@ -1,6 +1,10 @@
 #include "trace_point.h"
 #include <rte_eal.h>
 
+int global_count = 0;
+
+RTE_TRACE_POINT_REGISTER(app_trace_string, app.trace.string)
+
 int main(int argc, char *argv[]) {
 
   if (rte_eal_init(argc, argv) < 0) {
@@ -25,8 +29,11 @@ int main(int argc, char *argv[]) {
   }
 
   rte_trace_point_enable(&__app_trace_string);
+  if (rte_trace_point_is_enabled(&__app_trace_string)) {
+    printf("trace is enable\n");
+  }
 
-  app_trace_string("hello world\n");
+  app_trace_string("hello world");
 
   // rte_trace_metadata_dump(stdout);
   // rte_trace_dump(stdout);
@@ -34,6 +41,8 @@ int main(int argc, char *argv[]) {
   if (rte_trace_save() < 0) {
     printf("fail to save trace to file.\n");
   }
+
+  rte_eal_cleanup();
 
   return 0;
 }
