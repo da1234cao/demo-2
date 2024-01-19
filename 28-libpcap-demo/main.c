@@ -182,6 +182,7 @@ void load_pcap_file() {
 }
 
 int main(int argc, char *argv[]) {
+  printf("current libpcap version: %s", pcap_lib_version());
   capture();
   load_pcap_file();
 }
