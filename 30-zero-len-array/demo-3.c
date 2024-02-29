@@ -3,7 +3,7 @@
 
 struct buffer {
   unsigned int len;
-  char contents[];
+  long contents[];
 };
 
 int main(int argc, char *argv[]) {
@@ -11,11 +11,8 @@ int main(int argc, char *argv[]) {
 
   // construct a buffer
   struct buffer *buffer =
-      malloc(sizeof(struct buffer) + buf_len * (sizeof(char)));
+      malloc(sizeof(struct buffer) + buf_len * (sizeof(long)));
   buffer->len = buf_len;
-
-  snprintf(buffer->contents, buffer->len, "%s", "hello world");
-  printf("%s\n", buffer->contents);
 
   free(buffer);
   return 0;

@@ -1,15 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct line {
-  int length;
-  char contents[]; // sizeof(struct line) == 4
-  // int contents[]; // sizeof(struct line) == 4
-  // long int contents[0]; // sizeof(struct line) == 8
+struct buffer {
+  unsigned int len;
+  char *contents;
 };
 
 int main(int argc, char *argv[]) {
-  unsigned int len = 20;
-  struct line *line = malloc(sizeof(struct line) + len);
-  line->length = len;
+  unsigned int buf_len = 100;
+
+  // construct a buffer
+  struct buffer *buffer =
+      malloc(sizeof(struct buffer) + buf_len * (sizeof(char)));
+  buffer->contents = (char *)buffer + sizeof(struct buffer);
+  buffer->len = buf_len;
+
+  snprintf(buffer->contents, buffer->len, "%s", "hello world");
+  printf("%s\n", buffer->contents);
+
+  free(buffer);
+  return 0;
 }
