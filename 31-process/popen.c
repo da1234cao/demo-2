@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 
   char line[1024];
   while (fgets(line, sizeof(line), fp) != NULL) {
-    printf("%s", line);
+    printf("header: %s", line);
   }
 
   int status = pclose(fp);

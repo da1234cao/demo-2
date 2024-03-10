@@ -181,14 +181,3 @@ int main(int argc, char *argv[]) {
 问题一：能否单独获取标准错误输出，而不是将标准错误输出混在标准输出中。
 
 答案是可以，但是不是一个好主意，得引入select这样的函数，来保证可以同时读取两个流。可以参考: [c popen won't catch stderr - Stack Overflow](https://stackoverflow.com/questions/6900577/c-popen-wont-catch-stderr)
-
-问题二：为什么执行`char *cmd = "ls -alh NO_EXIST_FILE";`这样的命令，也获取到标准错误输出。
-
-这个就有点奇怪了。因为按照文档，popen只能获取到标注输出，而获取不到标准错误输出。但是翻了下[coreutils-ls](https://github.com/wertarbyte/coreutils/blob/f70c7b785b93dd436788d34827b209453157a6f2/src/ls.c#L2827)的源码，ls在这里，内部调用的`error`函数，确实是输出到标准错误输出。通过命令行`ls -alh NO_EXIST_FILE 2>/dev/null`也能验证，确实是标准错误输出。但是神奇的是，popen函数尽然可以拿到这个输出。我也不知道为啥。
-
-有句老话，源码面前，了无秘密。可以通过下面这个的方式，调试popn的源码。但是我目前不想探究这个原因。
-
-```shell
-# centos系安装glibc源码
-sudo debuginfo-install glibc-devel.x86_64
-```
