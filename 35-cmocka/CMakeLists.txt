@@ -22,3 +22,17 @@ set_target_properties(libcmocka PROPERTIES
 
 add_executable(demo-1 demo-1.c)
 target_link_libraries(demo-1 PRIVATE libcmocka)
+
+add_executable(demo-2 demo-2.c)
+target_link_libraries(demo-2 PRIVATE libcmocka)
+
+add_executable(demo-3 demo-3.c)
+target_link_libraries(demo-3 PRIVATE libcmocka)
+
+add_executable(demo-4-test demo-4-test.c)
+target_link_libraries(demo-4-test PRIVATE libcmocka)
+target_link_options(demo-4-test  PRIVATE -Wl,--wrap=get_value)
+
+add_executable(demo-5 demo-5.c demo-5-lib.c)
+target_link_libraries(demo-5 PRIVATE libcmocka)
+target_link_options(demo-5  PRIVATE -Wl,--wrap=get_value)

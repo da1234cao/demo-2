@@ -1,28 +1,17 @@
-
-// frome: https://qianchenzhumeng.github.io/posts/cmocka_tutorial/
-
 #include <setjmp.h>
 #include <stdarg.h>
 #include <stddef.h>
-#include <stdio.h>
+#include <stdint.h>
 
 #include <cmocka.h>
 
-int setup(void **state) {
-  printf("setup...\n");
-  return 0;
-}
+/* A test case that does nothing and succeeds. */
+static void null_test_success(void **state) { (void)state; /* unused */ }
 
-int teardown(void **state) {
-  printf("teardown...\n");
-  return 0;
-}
-
-void test_case(void **state) { printf("test...\n"); }
-
-int main(int argc, char *argv[]) {
+int main(void) {
   const struct CMUnitTest tests[] = {
-      cmocka_unit_test_setup_teardown(test_case, setup, teardown),
+      cmocka_unit_test(null_test_success),
   };
+
   return cmocka_run_group_tests(tests, NULL, NULL);
 }
