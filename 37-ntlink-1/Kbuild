@@ -1,0 +1,7 @@
+NAME = netlink_demo
+
+# 最后生成的*.ko的名字，与前面的NAME对应
+obj-m := $(NAME).o
+
+# 源文件的名字.o
+$(NAME)-objs := netlink_kernel.o
