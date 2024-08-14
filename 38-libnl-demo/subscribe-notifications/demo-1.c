@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
   /* Allocate a new socket */
   struct nl_sock *sk_route = nl_socket_alloc();
   if (sk_route == NULL) {
-    printf("%s\n", nl_geterror(ret));
+    printf("%s\n", "nl_socket_alloc failed");
     exit(EXIT_FAILURE);
   }
 
