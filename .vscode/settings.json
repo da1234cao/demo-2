@@ -6,5 +6,11 @@
         "internet": "c",
         "stdio.h": "c",
         "chrono": "cpp"
-    }
+    },
+    "clangd.arguments": [
+        "--background-index",
+        "-j=8",
+        "--header-insertion=never",
+        "--pch-storage=disk"
+    ]
 }
